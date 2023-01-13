@@ -246,7 +246,7 @@ TextButton2.Position = UDim2.new(0.1,0,0.7)
 TextButton2.Size = UDim2.new(0.34,0.9,0.15)
 TextButton2.Font = Enum.Font.SourceSansLight
 TextButton2.FontSize = Enum.FontSize.Size14
-TextButton2.Text = "帶來"
+TextButton2.Text = "吸人"
 TextButton2.TextScaled = true
 TextButton2.TextSize = 8
 TextButton2.TextWrapped = true
@@ -289,7 +289,7 @@ local Target = gplr(TextBox.text)
 		Target.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
 		lp.Character.Humanoid:Clone().Parent = lp.Character
 		lp.Character.Humanoid:Destroy()
-		game.Workspace.CurrentCamera.CameraSubject = lp.Character.Head
+		game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
 local old = game.Players.LocalPlayer.Character:getChildren()
 for i=1,#old do
 if old[i].Name == "HumanoidRootPart" then
@@ -316,66 +316,67 @@ TextButton3.Position = UDim2.new(0.54,0,0.7)
 TextButton3.Size = UDim2.new(0.34,0.9,0.15)
 TextButton3.Font = Enum.Font.SourceSansLight
 TextButton3.FontSize = Enum.FontSize.Size14
-TextButton3.Text = "滯空"
+TextButton3.Text = "秒殺"
 TextButton3.TextScaled = true
 TextButton3.TextSize = 8
 TextButton3.TextWrapped = true
 
 TextButton3.MouseButton1Click:connect(function()
-local lp = game:FindService("Players").LocalPlayer
+    local lp = game:FindService("Players").LocalPlayer
 
-local function gplr(String)
-	local Found = {}
-	local strl = String:lower()
-	if strl == "all" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			table.insert(Found,v)
-		end
-	elseif strl == "others" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name ~= lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	elseif strl == "me" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name == lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	else
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name:lower():sub(1, #String) == String:lower() then
-				table.insert(Found,v)
-			end
-		end 
-	end
-	return Found 
-end
-
-local Target = gplr(TextBox.text)
-	if Target[1] then
-		Target = Target[1]
-		Target.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
-		lp.Character.Humanoid:Clone().Parent = lp.Character
-		lp.Character.Humanoid:Destroy()
-		game.Workspace.CurrentCamera.CameraSubject = lp.Character.Head
-	end
-	wait(0.01)
-	for i,tools in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
-		if tools:IsA("Tool") then
-			tools.Parent = game.Players.LocalPlayer.Character
-		end
-	wait(0.1)
-		local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
-		Thrust.Force = Vector3.new(9999,9999,9999)
-		Thrust.Name = "flingForce"
-		repeat
-			lp.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPart.CFrame
-			Thrust.Location = Target.Character.HumanoidRootPart.Position
-			game:FindService("RunService").Heartbeat:wait()
-		until not Target.Character:FindFirstChild("Head")
-	end
+    local function gplr(String)
+        local Found = {}
+        local strl = String:lower()
+        if strl == "all" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                table.insert(Found,v)
+            end
+        elseif strl == "others" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name ~= lp.Name then
+                    table.insert(Found,v)
+                end
+            end 
+        elseif strl == "me" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name == lp.Name then
+                    table.insert(Found,v)
+                end
+            end 
+        else
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v)
+                end
+            end 
+        end
+        return Found 
+    end
+    
+    local Target = gplr(TextBox.text)
+        if Target[1] then
+            Target = Target[1]
+            Target.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
+            lp.Character.Humanoid:Clone().Parent = lp.Character
+            lp.Character.Humanoid:Destroy()
+            game.Players.LocalPlayer.Character.Humanoid:ChangeState(15)
+    local old = game.Players.LocalPlayer.Character:getChildren()
+    for i=1,#old do
+    if old[i].Name == "HumanoidRootPart" then
+    lastPos = old[i].CFrame
+    end
+    end
+    
+        end
+        for i,tools in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
+            if tools:IsA("Tool") then
+                tools.Parent = game.Players.LocalPlayer.Character
+            end
+            local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
+            Thrust.Force = Vector3.new()
+            Thrust.Name = "flingForce"
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = lastPos
+    end
 end)
 
 TextButton0.Parent = Frame
@@ -419,7 +420,7 @@ TextButtonb1.Position = UDim2.new(0.54,0,0.45)
 TextButtonb1.Size = UDim2.new(0.34,0.9,0.15)
 TextButtonb1.Font = Enum.Font.SourceSansLight
 TextButtonb1.FontSize = Enum.FontSize.Size14
-TextButtonb1.Text = "帶來所有玩家(虛擬)"
+TextButtonb1.Text = "帶來隨機一位玩家"
 TextButtonb1.TextScaled = true
 TextButtonb1.TextSize = 8
 TextButtonb1.TextWrapped = true
@@ -490,106 +491,66 @@ TextButtonb2.Position = UDim2.new(0.1,0,0.45)
 TextButtonb2.Size = UDim2.new(0.34,0.9,0.15)
 TextButtonb2.Font = Enum.Font.SourceSansLight
 TextButtonb2.FontSize = Enum.FontSize.Size14
-TextButtonb2.Text = "殺死所有玩家(虛擬)"
+TextButtonb2.Text = "拋飛\n(輸入名字則拋飛當前玩家)"
 TextButtonb2.TextScaled = true
 TextButtonb2.TextSize = 8
 TextButtonb2.TextWrapped = true
 
 TextButtonb2.MouseButton1Click:connect(function()
-local lp = game:FindService("Players").LocalPlayer
+    local lp = game:FindService("Players").LocalPlayer
 
-local function gplr(String)
-	local Found = {}
-	local strl = String:lower()
-	if strl == "all" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			table.insert(Found,v)
-		end
-	elseif strl == "others" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name ~= lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	elseif strl == "me" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name == lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	else
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name:lower():sub(1, #String) == String:lower() then
-				table.insert(Found,v)
-			end
-		end 
-	end
-	return Found 
-end
-
-	for i,Playys in pairs(game.Players:GetPlayers()) do
-		Playys.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
-		lp.Character.Humanoid:Clone().Parent = lp.Character
-		lp.Character.Humanoid:Destroy()
-		game.Workspace.CurrentCamera.CameraSubject = lp.Character.Head
-	end
-wait()
-	for i,tools in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
-		if tools:IsA("Tool") then
-			tools.Parent = game.Players.LocalPlayer.Character
-		end
-	end
-wait(1.8)
-local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
-Thrust.Force = Vector3.new(999999999,999999999,99999999)
-Thrust.Name = "flingForce"
-local lp = game:FindService("Players").LocalPlayer
-
-local function gplr(String)
-	local Found = {}
-	local strl = String:lower()
-	if strl == "all" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			table.insert(Found,v)
-		end
-	elseif strl == "others" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name ~= lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	elseif strl == "me" then
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name == lp.Name then
-				table.insert(Found,v)
-			end
-		end 
-	else
-		for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-			if v.Name:lower():sub(1, #String) == String:lower() then
-				table.insert(Found,v)
-			end
-		end 
-	end
-	return Found 
-end
-
-	for i,Playys in pairs(game.Players:GetPlayers()) do
-		Playys.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
-		lp.Character.Humanoid:Clone().Parent = lp.Character
-		lp.Character.Humanoid:Destroy()
-		game.Workspace.CurrentCamera.CameraSubject = lp.Character.Head
-	end
-wait()
-	for i,tools in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
-		if tools:IsA("Tool") then
-			tools.Parent = game.Players.LocalPlayer.Character
-		end
-	end
-wait(1.8)
-local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
-Thrust.Force = Vector3.new(999999999,999999999,99999999)
-Thrust.Name = "flingForce"
+    local function gplr(String)
+        local Found = {}
+        local strl = String:lower()
+        if strl == "all" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                table.insert(Found,v)
+            end
+        elseif strl == "others" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name ~= lp.Name then
+                    table.insert(Found,v)
+                end
+            end 
+        elseif strl == "me" then
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name == lp.Name then
+                    table.insert(Found,v)
+                end
+            end 
+        else
+            for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+                if v.Name:lower():sub(1, #String) == String:lower() then
+                    table.insert(Found,v)
+                end
+            end 
+        end
+        return Found 
+    end
+    
+    local Target = gplr(TextBox.text)
+        if Target[1] then
+            Target = Target[1]
+            Target.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame
+            lp.Character.Humanoid:Clone().Parent = lp.Character
+            lp.Character.Humanoid:Destroy()
+            game.Workspace.CurrentCamera.CameraSubject = lp.Character.Head
+        end
+        wait(0.01)
+        for i,tools in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
+            if tools:IsA("Tool") then
+                tools.Parent = game.Players.LocalPlayer.Character
+            end
+        wait(0.1)
+            local Thrust = Instance.new('BodyThrust', lp.Character.HumanoidRootPart)
+            Thrust.Force = Vector3.new(9999,9999,9999)
+            Thrust.Name = "flingForce"
+            repeat
+                lp.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPart.CFrame
+                Thrust.Location = Target.Character.HumanoidRootPart.Position
+                game:FindService("RunService").Heartbeat:wait()
+            until not Target.Character:FindFirstChild("Head")
+        end
 end)
 
 TextButtonb3.Parent = Frame1
